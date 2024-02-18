@@ -33,7 +33,7 @@ app.post("/api/auth/register", async (req, res) => {
 app.post("/api/auth/login", async(req, res) => {
   const { email, password } = req.body;
 
-  const user = prisma.user.findUnique({ where: { emai }});
+  const user = await prisma.user.findUnique({ where: { email }});
 
   if (!user) {
     return res
@@ -49,11 +49,10 @@ app.post("/api/auth/login", async(req, res) => {
   }
 
   const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-    expiresIn: "id",
+    expiresIn: "1d",
   });
 
   return res.json({ token });
-
 });
 
 app.listen(PORT, () => console.log(`server is running on Port ${PORT}`));
